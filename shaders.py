@@ -93,13 +93,21 @@ def surf_to_texture(surf: pygame.Surface):
 
 
 while True:
-    screen.fill((0, 0, 0))
-    screen.blit(img, pygame.mouse.get_pos())
+    display.fill((0, 0, 0))
+    display.blit(img, pygame.mouse.get_pos())
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
 
+    frame_tex = surf_to_texture(display)
+    frame_tex.use(0)
+    program["tex"] = 0
+    render_object.render(mode=moderngl.TRIANGLE_STRIP)
+
     pygame.display.flip()
+
+    frame_tex.release()
+
     clock.tick(60)
