@@ -81,6 +81,19 @@ program = ctx.program(vertex_shader=vert_shader, fragment_shader=frag_shader)
 # (2f 2f) => (vert texcoord)
 render_object = ctx.vertex_array(program, [(quad_buffer, "2f 2f", "vert", "texcoord")])
 
+
+def surf_to_texture(surf: pygame.Surface):
+    """helper function to convert pygame surface into openGL texture"""
+    tex = ctx.texture(surf.get_size(), 4)
+    tex.filter = (
+        moderngl.NEAREST,
+        moderngl.NEAREST,
+    )  # scale up method (2x2 to 1000x1000)
+    tex.swizzle = "BGRA"
+    tex.write(surf.get_view("1"))  # get raw data
+    return tex
+
+
 while True:
     screen.fill((0, 0, 0))
     screen.blit(img, pygame.mouse.get_pos())
