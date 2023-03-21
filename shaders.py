@@ -66,12 +66,14 @@ frag_shader = """
 #version 330 core
 
 uniform sampler2D tex;
+uniform float time;
 
 in vec2 uvs;
 out vec4 f_color;
 
 void main() {
-    f_color = vec4(texture(tex, uvs).rgb, 1.0);
+    vec2 sample_pos = vec2(uvs.x + sin(uvs.y * 10 + time * 0.01) * 0.1, uvs.y);
+    f_color = vec4(texture(tex, sample_pos).rg, texture(tex, sample_pos).b * 1.5, 1.0);
 }
 """
 
@@ -92,7 +94,10 @@ def surf_to_texture(surf: pygame.Surface):
     return tex
 
 
+t = 0
+
 while True:
+    t += 1
     display.fill((0, 0, 0))
     display.blit(img, pygame.mouse.get_pos())
 
@@ -104,6 +109,7 @@ while True:
     frame_tex = surf_to_texture(display)
     frame_tex.use(0)
     program["tex"] = 0
+    program["time"] = t
     render_object.render(mode=moderngl.TRIANGLE_STRIP)
 
     pygame.display.flip()
