@@ -5,14 +5,12 @@ import array
 
 pygame.init()
 
-screen = pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode((800, 600), pygame.OPENGL | pygame.DOUBLEBUF)
+display = pygame.Surface((800, 600))
 clock = pygame.time.Clock()
 img = pygame.image.load("img.png")
 
-# GPU version
-# ctx = moderngl.create_context()
-
-ctx = moderngl.create_standalone_context()
+ctx = moderngl.create_context()
 print(ctx.version_code)
 # position (x,y), uv coords (x, y)
 # 1 |   /| 2
